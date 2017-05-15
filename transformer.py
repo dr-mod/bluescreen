@@ -8,8 +8,11 @@ class Transformer:
     def transform(self, device):
         uuid = device[0]
         name = self.__devices.get(uuid.lower())
-        distance = 0
-        return (name, distance)
+        if name is None:
+            return None
+        rssi = device[1]
+        distance = 10 ** ((-60 - rssi) / 20)
+        return name, distance
 
     @staticmethod
     def __load_devices(file_name):

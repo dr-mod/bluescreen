@@ -1,20 +1,26 @@
-import observer
-import transformer
-import view
+from observer import Observable
+from transformer import Transformer
+from view import Console
+from scanner import BleScanner
 import time
+
+TICK_INTERVAL = 2
 
 
 def main():
-    transf = transformer.Transformer()
-    observable = observer.Observable()
-    view.Console(observable)
+    transformer = Transformer()
+    observable = Observable()
+    Console(observable)
 
-    i = 0
+    beacon_scanner = BleScanner()
+    beacon_scanner.start()
+
     while True:
-        device_info = transf.transform(("FF:FF:FF:FF:FF:FF", i))
-        observable.update_observers(device_info)
-        i += 1
-        time.sleep(2)
+        for message in beacon_scanner.pop_messages():
+            device_info = transformer.transform(message)
+            if device_info is not None:
+                observable.update_observers(device_info)
+        time.sleep(TICK_INTERVAL)
 
 if __name__ == "__main__":
     main()
