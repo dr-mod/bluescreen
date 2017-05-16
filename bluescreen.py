@@ -2,6 +2,7 @@ from observer import Observable
 from transformer import Transformer
 from view import Console
 from scanner import BleScanner
+from oled import OledDisplay
 import time
 
 TICK_INTERVAL = 2
@@ -11,6 +12,7 @@ def main():
     transformer = Transformer()
     observable = Observable()
     Console(observable)
+    OledDisplay(observable)
 
     beacon_scanner = BleScanner()
     beacon_scanner.start()
