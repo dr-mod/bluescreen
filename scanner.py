@@ -16,7 +16,7 @@ class BleScanner(threading.Thread):
         threading.Thread.__init__(self)
         self.__lock = threading.Lock()
         self.__messages = []
-        self.__sock = self.init_bluetooth()
+        self.__sock = self.__init_bluetooth()
 
     def run(self):
         self.__sock.getsockopt(bluez.SOL_HCI, bluez.HCI_FILTER, 14)
@@ -39,10 +39,12 @@ class BleScanner(threading.Thread):
                 if sub_event == EVT_LE_CONN_COMPLETE:
                     le_handle_connection_complete(pkt)
                 elif sub_event == EVT_LE_ADVERTISING_REPORT:
-                    mac = self.packed_bdaddr_to_string(pkt[3:9])
+                    mac = self.__packed_bdaddr_to_string(pkt[3:9])
                     rssi = struct.unpack("b", pkt[-1])[0]
+                    data_frame = pkt[14:-1]
+                    payload = struct.unpack("B"*len(data_frame), data_frame)
                     self.__lock.acquire()
-                    self.__messages.append((mac, rssi))
+                    self.__messages.append((mac, rssi, payload))
                     self.__lock.release()
 
             self.__sock.setsockopt(bluez.SOL_HCI, bluez.HCI_FILTER, old_filter)
@@ -55,7 +57,7 @@ class BleScanner(threading.Thread):
         return result
 
     @staticmethod
-    def init_bluetooth():
+    def __init_bluetooth():
         os.system("sudo hciconfig hci0 down")
         os.system("sudo hciconfig hci0 up")
         try:
@@ -64,5 +66,5 @@ class BleScanner(threading.Thread):
             sys.exit(1)
 
     @staticmethod
-    def packed_bdaddr_to_string(bdaddr_packed):
+    def __packed_bdaddr_to_string(bdaddr_packed):
         return ':'.join('%02x' % i for i in struct.unpack("<BBBBBB", bdaddr_packed[::-1]))

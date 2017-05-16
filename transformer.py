@@ -12,7 +12,14 @@ class Transformer:
             return None
         rssi = device[1]
         distance = 10 ** ((-60 - rssi) / 20)
-        return name, distance
+        awake = self.__awake(device[2])
+        return name, distance, awake
+
+    @staticmethod
+    def __awake(payload):
+        if len(payload) < 21:
+            return None
+        return payload[20] == 2
 
     @staticmethod
     def __load_devices(file_name):

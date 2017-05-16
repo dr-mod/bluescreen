@@ -8,11 +8,11 @@ from observer import Observer
 class OledDisplay(Observer):
     def __init__(self, observable):
         Observer.__init__(self, observable)
-        self.__display = self.init_display()
+        self.__display = self.__init_display()
         self.__font = ImageFont.load_default()
 
     @staticmethod
-    def init_display():
+    def __init_display():
         display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
         display.begin()
         display.clear()
@@ -28,7 +28,7 @@ class OledDisplay(Observer):
 
         draw = ImageDraw.Draw(image)
 
-        draw.text((0, 0), '{} {}'.format(device[0], device[1]), font=self.__font, fill=255)
+        draw.text((0, 0), '{:8s} {:2.2f} {}'.format(*device), font=self.__font, fill=255)
 
         self.__display.image(image)
         self.__display.display()
