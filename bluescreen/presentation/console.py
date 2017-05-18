@@ -1,4 +1,4 @@
-import observer
+from bluescreen import observer
 
 
 class Console(observer.Observer):

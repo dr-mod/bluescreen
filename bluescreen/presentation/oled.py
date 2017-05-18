@@ -2,7 +2,8 @@ import Adafruit_SSD1306
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-from observer import Observer
+
+from bluescreen.observer import Observer
 
 
 class OledDisplay(Observer):

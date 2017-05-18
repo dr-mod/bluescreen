@@ -1,11 +1,12 @@
-from observer import Observable
-from transformer import Transformer
-from aggregator import Aggregator
-from config import Config
-from view import Console
-from scanner import BleScanner
-from oled import OledDisplay
 import time
+
+from bluescreen.aggregator import Aggregator
+from bluescreen.jsonconfig import JsonConfig
+from bluescreen.observer import Observable
+from bluescreen.presentation.console import Console
+from bluescreen.presentation.oled import OledDisplay
+from bluescreen.scanner import BleScanner
+from bluescreen.transformer import Transformer
 
 TICK_INTERVAL = 2
 LOST_TIME = 10
@@ -19,7 +20,7 @@ def main():
     Console(observable)
     OledDisplay(observable)
 
-    config = Config()
+    config = JsonConfig()
     transformer = Transformer(config)
     aggregator = Aggregator(LOST_TIME)
 
