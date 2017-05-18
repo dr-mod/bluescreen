@@ -18,10 +18,12 @@ def main():
     beacon_scanner.start()
 
     while True:
+        transformed_devices_info = []
         for message in beacon_scanner.pop_messages():
             device_info = transformer.transform(message)
             if device_info is not None:
-                observable.update_observers(device_info)
+                transformed_devices_info.append(device_info)
+        observable.update_observers(transformed_devices_info)
         time.sleep(TICK_INTERVAL)
 
 if __name__ == "__main__":
