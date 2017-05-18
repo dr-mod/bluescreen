@@ -10,8 +10,8 @@ class OledDisplay(Observer):
     STEP = 16
     TEXT_OFFSET = 3
 
-    AWAKE = Image.open('sun2.ppm').convert('1')
-    ASLEEP = Image.open('moon.ppm').convert('1')
+    AWAKE = Image.open('img/sun2.ppm').convert('1')
+    ASLEEP = Image.open('img/moon.ppm').convert('1')
 
     def __init__(self, observable):
         Observer.__init__(self, observable)

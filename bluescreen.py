@@ -1,6 +1,7 @@
 from observer import Observable
 from transformer import Transformer
 from aggregator import Aggregator
+from config import Config
 from view import Console
 from scanner import BleScanner
 from oled import OledDisplay
@@ -18,13 +19,14 @@ def main():
     Console(observable)
     OledDisplay(observable)
 
-    transformer = Transformer()
+    config = Config()
+    transformer = Transformer(config)
     aggregator = Aggregator(LOST_TIME)
 
     while True:
         messages = beacon_scanner.pop_messages()
-        dev_infos = list(map((lambda message: transformer.transform(message)), messages))
-        dev_infos = [dev_info for dev_info in dev_infos if dev_info is not None]
+        filtered_messages = [mes for mes in messages if transformer.tracked_message(mes)]
+        dev_infos = list(map((lambda message: transformer.transform(message)), filtered_messages))
         cached_dev_infos = aggregator.update(dev_infos)
         observable.update_observers(cached_dev_infos)
         time.sleep(TICK_INTERVAL)
