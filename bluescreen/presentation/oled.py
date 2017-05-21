@@ -37,7 +37,7 @@ class OledDisplay(Observer):
         img_x = self.__display.width - 16
         for idx, device in enumerate(devices):
             y = OledDisplay.STEP * idx
-            draw.text((0, y + OledDisplay.TEXT_OFFSET), '{:8s} {:2.2f}'.format(device[0], device[1]), font=self.__font, fill=255)
+            draw.text((0, y + OledDisplay.TEXT_OFFSET), '{:12s} {:2.2f}'.format(device[0], device[1]), font=self.__font, fill=255)
             if device[2] is not None:
                 status_image = OledDisplay.AWAKE if device[2] else OledDisplay.ASLEEP
                 image.paste(status_image, (img_x, y))

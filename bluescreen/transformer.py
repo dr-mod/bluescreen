@@ -22,4 +22,5 @@ class Transformer:
     def __awake(payload):
         if len(payload) < 21:
             return None
-        return payload[20] == 2
+        return {1: False,
+                2: True}.get(payload[20], None)
