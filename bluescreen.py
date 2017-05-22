@@ -14,6 +14,7 @@ LOST_TIME = 10
 
 def main():
     beacon_scanner = BleScanner()
+    beacon_scanner.setDaemon(True)
     beacon_scanner.start()
 
     observable = Observable()
