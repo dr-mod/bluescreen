@@ -9,7 +9,7 @@ from bluescreen.scanner import BleScanner
 from bluescreen.transformer import Transformer
 
 TICK_INTERVAL = 2
-LOST_TIME = 10
+LOST_TIME = 15
 
 
 def main():
@@ -27,9 +27,8 @@ def main():
 
     while True:
         messages = beacon_scanner.pop_messages()
-        filtered_messages = [mes for mes in messages if transformer.tracked_message(mes)]
-        dev_infos = list(map((lambda message: transformer.transform(message)), filtered_messages))
-        cached_dev_infos = aggregator.update(dev_infos)
+        dev_infos = [transformer.transform(mes) for mes in messages if transformer.tracked_message(mes)]
+        cached_dev_infos = aggregator.process(dev_infos)
         observable.update_observers(cached_dev_infos)
         time.sleep(TICK_INTERVAL)
 

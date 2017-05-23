@@ -8,7 +8,7 @@ class Aggregator:
         self.lost_uuids = []
         self.__lost_time = lost_time
 
-    def update(self, dev_infos):
+    def process(self, dev_infos):
         self.new_uuids = []
         self.lost_uuids = []
         for info in dev_infos:
