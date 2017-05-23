@@ -4,11 +4,11 @@ class Transformer:
 
     def transform(self, message):
         uuid = self.__extract_uuid(message)
-        name = self.__config.devices.get(uuid.lower())
+        name = self.__config.get_name(uuid.lower())
         rssi = message[1]
         distance = 10 ** ((-60 - rssi) / 20)
         awake = self.__awake(message[2])
-        return name, distance, awake
+        return name, distance, awake, uuid
 
     def tracked_message(self, message):
         uuid = self.__extract_uuid(message)

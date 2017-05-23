@@ -12,7 +12,7 @@ class Aggregator:
         self.new_uuids = []
         self.lost_uuids = []
         for info in dev_infos:
-            uuid = info[0]
+            uuid = info[3]
             if uuid not in self.__cache:
                 self.new_uuids.append(uuid)
                 self.__cache[uuid] = _Element(info)
