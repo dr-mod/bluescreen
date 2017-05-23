@@ -9,6 +9,6 @@ class JsonConfig:
     def __load_devices(file_name):
         js = open(file_name)
         result = {}
-        for mac, alias in json.load(js).iteritems():
-            result[mac.lower()] = alias
+        for mac, data in json.load(js).iteritems():
+            result[mac.lower()] = data['name']
         return result

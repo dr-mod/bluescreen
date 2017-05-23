@@ -1,1 +1,9 @@
-{ "FF:FF:FF:FF:FF:FF" : "MyBand" }
+{
+  "FF:FF:FF:FF:FF:FF" : {
+    "name" : "MyBand",
+    "on" : {
+      "appear" : "touch MyBand.txt",
+      "lost"   : "rm MyBand.txt"
+    }
+  }
+}
