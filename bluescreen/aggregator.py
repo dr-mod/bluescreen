@@ -3,37 +3,37 @@ import time
 
 class Aggregator:
     def __init__(self, lost_time):
-        self.__cache = {}
+        self._cache = {}
         self.new_uuids = []
         self.lost_uuids = []
-        self.__lost_time = lost_time
+        self._lost_time = lost_time
 
     def process(self, dev_infos):
         self.new_uuids = []
         self.lost_uuids = []
         for info in dev_infos:
             uuid = info[3]
-            if uuid not in self.__cache:
+            if uuid not in self._cache:
                 self.new_uuids.append(uuid)
-                self.__cache[uuid] = _Element(info)
+                self._cache[uuid] = _Element(info)
             else:
-                element = self.__cache[uuid]
+                element = self._cache[uuid]
                 element.update_last_seen()
                 if element.dev_info != info:
-                    self.__dev_info_updated(uuid, info)
+                    self._dev_info_updated(uuid, info)
 
-        self.__remove_lost_devices()
-        return list(map((lambda e: e.dev_info), self.__cache.values()))
+        self._remove_lost_devices()
+        return list(map((lambda e: e.dev_info), self._cache.values()))
 
-    def __remove_lost_devices(self):
-        self.lost_uuids = [uuid for uuid, element in self.__cache.items() if
-                           time.time() - element.last_seen > self.__lost_time]
+    def _remove_lost_devices(self):
+        self.lost_uuids = [uuid for uuid, element in self._cache.items() if
+                           time.time() - element.last_seen > self._lost_time]
         for uuid in self.lost_uuids:
-            del self.__cache[uuid]
+            del self._cache[uuid]
 
-    def __dev_info_updated(self, uuid, dev_info):
+    def _dev_info_updated(self, uuid, dev_info):
         # TODO: implement merging
-        self.__cache[uuid].dev_info = dev_info
+        self._cache[uuid].dev_info = dev_info
 
 
 class _Element:

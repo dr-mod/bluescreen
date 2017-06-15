@@ -8,11 +8,11 @@ class Observer:
 
 class Observable:
     def __init__(self):
-        self.__observers = []
+        self._observers = []
 
     def register(self, observer):
-        self.__observers.append(observer)
+        self._observers.append(observer)
 
     def update_observers(self, devices):
-        for observer in self.__observers:
+        for observer in self._observers:
             observer.update(devices)

@@ -16,11 +16,11 @@ class OledDisplay(Observer):
 
     def __init__(self, observable):
         Observer.__init__(self, observable)
-        self.__display = self.__init_display()
-        self.__font = ImageFont.load_default()
+        self._display = self._init_display()
+        self._font = ImageFont.load_default()
 
     @staticmethod
-    def __init_display():
+    def _init_display():
         display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
         display.begin()
         display.clear()
@@ -28,21 +28,21 @@ class OledDisplay(Observer):
         return display
 
     def update(self, devices):
-        width = self.__display.width
-        height = self.__display.height
+        width = self._display.width
+        height = self._display.height
         image = Image.new('1', (width, height))
 
         draw = ImageDraw.Draw(image)
 
-        img_x = self.__display.width - 16
+        img_x = self._display.width - 16
         for idx, device in enumerate(devices):
             y = OledDisplay.STEP * idx
-            draw.text((0, y + OledDisplay.TEXT_OFFSET), '{:12s} {:2.2f}'.format(device[0], device[1]), font=self.__font, fill=255)
+            draw.text((0, y + OledDisplay.TEXT_OFFSET), '{:12s} {:2.2f}'.format(device[0], device[1]), font=self._font, fill=255)
             if device[2] is not None:
                 status_image = OledDisplay.AWAKE if device[2] else OledDisplay.ASLEEP
                 image.paste(status_image, (img_x, y))
 
-        self.__display.clear()
-        self.__display.image(image)
-        self.__display.display()
+        self._display.clear()
+        self._display.image(image)
+        self._display.display()
 
